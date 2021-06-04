@@ -162,14 +162,14 @@ var Finesse = function (username, password) {
     this.sysInfo = function(handler, errHandler) {
         var method = "GET",
         params = ""
-        url = _webappPath + "/api/SystemInfo";
+        url = "https://172.20.64.34:8445/finesse/api/SystemInfo";
         _sendReq(url, method, null, null, handler, errHandler, null, null, "");
     };
         
     this.signIn = function (agentid, extension, forcedFlag, handler, errHandler) {
         var method = "PUT",
         cache = "",
-        url = _webappPath + "/api/User/" + agentid;
+        url = "https://172.20.64.34:8445/finesse/api/User/" + agentid;
         xmlData = "<User><state>LOGIN</state><extension>"+extension+"</extension></User>";
         _sendReq(url, method, null, null, handler, errHandler, null, xmlData);
     };
@@ -189,7 +189,7 @@ var Finesse = function (username, password) {
      */
     this.signOut = function (agentid, extension, reasonCode, handler, errHandler) {
         var method = "PUT",
-        url = _webappPath + "/api/User/"+agentid;
+        url = "https://172.20.64.34:8445/finesse/api/User/"+agentid;
         xmlData = "<User><state>LOGOUT</state></User>";
         _sendReq(url, method, null, null, handler, errHandler, null, xmlData);
     };
@@ -212,7 +212,7 @@ var Finesse = function (username, password) {
      */
     this.getState = function (agentId, handler, errHandler) {
         var method = "GET",
-        url = _webappPath + "/api/User/" + agentId;
+        url = "https://172.20.64.34:8445/finesse/api/User/" + agentId;
         // no xmlData on a GET
         _sendReq(url, method, null, null, handler, errHandler, null, null);
     };
@@ -247,8 +247,8 @@ var Finesse = function (username, password) {
      */
     this.changeState = function (agentId, state, reasonCode, handler, errHandler) {
         var method = "PUT",
-        url = _webappPath + "/api/User/" + agentId ,
-        //url = _webappPath + "/api/User/" + agentId ,
+        url = "https://172.20.64.34:8445/finesse/api/User/" + agentId ,
+        //url = "https://172.20.64.34:8445/finesse/api/User/" + agentId ,
         //params = {"newState": state};
         //if (reasonCode) {
         //    params.reasonCode = reasonCode;
@@ -272,7 +272,7 @@ var Finesse = function (username, password) {
      */
     this.subscribeToState = function (agentId, resource, handler, errHandler) {
         var method = "POST",
-        url = _webappPath + "/api/User/" + agentId,
+        url = "https://172.20.64.34:8445/finesse/api/User/" + agentId,
         params = {"resource": _resource};
         _sendReq(url, method, null, params, handler, errHandler);
     };
@@ -295,7 +295,7 @@ var Finesse = function (username, password) {
      */
     this.makeCall = function (dialedNumber, callerNumber, handler, errHandler) {
         var method = "POST",
-        url = _webappPath + "/api/User/"+callerNumber+"/Dialogs",
+        url = "https://172.20.64.34:8445/finesse/api/User/"+callerNumber+"/Dialogs",
         params = { "requestedAction" : "MAKE_CALL",
                   "toAddress" : dialedNumber,
                   "fromAddress" : callerNumber},
@@ -316,7 +316,7 @@ var Finesse = function (username, password) {
      */
     this.answerCall = function (callId, myExtension, handler, errHandler) {
         var method = "PUT",
-        url = _webappPath + "/api/Dialog/" + callId,
+        url = "https://172.20.64.34:8445/finesse/api/Dialog/" + callId,
         xml = "<Dialog><targetMediaAddress>"+myExtension+"</targetMediaAddress><requestedAction>ANSWER</requestedAction></Dialog>";
         _sendReq(url, method, null, null, handler, errHandler, false, xml);
     };
@@ -334,7 +334,7 @@ var Finesse = function (username, password) {
      */
     this.holdCall = function (callId, myExtension, handler, errHandler) {
         var method = "PUT",
-        url = _webappPath + "/api/Dialog/" + callId,
+        url = "https://172.20.64.34:8445/finesse/api/Dialog/" + callId,
     xml = "<Dialog><targetMediaAddress>"+myExtension+"</targetMediaAddress><requestedAction>HOLD</requestedAction></Dialog>";
         _sendReq(url, method, null, null, handler, errHandler, false, xml);
     };
@@ -352,7 +352,7 @@ var Finesse = function (username, password) {
      */
     this.retrieveCall = function (callId, myExtension, handler, errHandler) {
         var method = "PUT",
-        url = _webappPath + "/api/Dialog/" + callId,
+        url = "https://172.20.64.34:8445/finesse/api/Dialog/" + callId,
         xml = "<Dialog><targetMediaAddress>"+myExtension+"</targetMediaAddress><requestedAction>RETRIEVE</requestedAction></Dialog>"; 
         _sendReq(url, method, null, null, handler, errHandler, false, xml);
     };
@@ -372,7 +372,7 @@ var Finesse = function (username, password) {
      */
     this.dropCall = function (callId, connectionDeviceID, handler, errHandler) {
         var method = "PUT",
-        url = _webappPath + "/api/Dialog/" + callId ,
+        url = "https://172.20.64.34:8445/finesse/api/Dialog/" + callId ,
         params = {"connectionDeviceId": connectionDeviceID},
         xml = "<Dialog><targetMediaAddress>"+connectionDeviceID+"</targetMediaAddress><requestedAction>DROP</requestedAction></Dialog>";
         _sendReq(url, method, null, params, handler, errHandler, false, xml);
