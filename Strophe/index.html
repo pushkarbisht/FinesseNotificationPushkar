@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <script type="text/javascript">
+    //Set the JabberWerx connect to unsecure because the custom authentication
+    //on the XMPP server does not support encrypted credentials.
+    var jabberwerx_config = {unsecureAllowed: true};
+    
+//Set the JabberWerx connect to unsecure because the custom authentication
+//on the XMPP server does not support encrypted credentials.
+var jabberwerx_config = {unsecureAllowed: true};
+</script>
+
+<script type="text/javascript" src="thirdparty/jquery/jquery-1.5.min.js"></script>
+<script type="text/javascript" src="thirdparty/strophe/strophe.js"></script>
+<script type="text/javascript" src="thirdparty/strophe/strophe.pubsub.min.js"></script><!--
+<script type="text/javascript" src="thirdparty/util/converter.js"></script>-->
+<script type="text/javascript" src="EventTunnel.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function () {
+    var tunnel = new finesse.EventTunnel();
+    tunnel.init();
+});
+</script>
+</head>
+</html>
