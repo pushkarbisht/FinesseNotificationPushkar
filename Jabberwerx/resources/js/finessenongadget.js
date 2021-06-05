@@ -19,7 +19,7 @@ var Finesse = function (username, password) {
     _credentials = jabberwerx.util.crypto.b64Encode(username + ":" + password),
 
     //The webapp path to preprend to all API requests.
-    _webappPath = "/finesse",
+    _webappPath = "https://172.20.64.34:8445/finesse",
 
     /**
      * Add headers to the API request.
@@ -162,14 +162,14 @@ var Finesse = function (username, password) {
     this.sysInfo = function(handler, errHandler) {
         var method = "GET",
         params = ""
-        url = "https://172.20.64.34:8445/finesse/api/SystemInfo";
+        url = _webappPath+"/api/SystemInfo";
         _sendReq(url, method, null, null, handler, errHandler, null, null, "");
     };
         
     this.signIn = function (agentid, extension, forcedFlag, handler, errHandler) {
         var method = "PUT",
         cache = "",
-        url = "https://172.20.64.34:8445/finesse/api/User/" + agentid;
+        url = _webappPath+"/api/User/" + agentid;
         xmlData = "<User><state>LOGIN</state><extension>"+extension+"</extension></User>";
         _sendReq(url, method, null, null, handler, errHandler, null, xmlData);
     };
@@ -189,7 +189,7 @@ var Finesse = function (username, password) {
      */
     this.signOut = function (agentid, extension, reasonCode, handler, errHandler) {
         var method = "PUT",
-        url = "https://172.20.64.34:8445/finesse/api/User/"+agentid;
+        url = _webappPath+"/api/User/"+agentid;
         xmlData = "<User><state>LOGOUT</state></User>";
         _sendReq(url, method, null, null, handler, errHandler, null, xmlData);
     };
@@ -212,7 +212,7 @@ var Finesse = function (username, password) {
      */
     this.getState = function (agentId, handler, errHandler) {
         var method = "GET",
-        url = "https://172.20.64.34:8445/finesse/api/User/" + agentId;
+        url = _webappPath+"/api/User/" + agentId;
         // no xmlData on a GET
         _sendReq(url, method, null, null, handler, errHandler, null, null);
     };
@@ -247,7 +247,7 @@ var Finesse = function (username, password) {
      */
     this.changeState = function (agentId, state, reasonCode, handler, errHandler) {
         var method = "PUT",
-        url = "https://172.20.64.34:8445/finesse/api/User/" + agentId ,
+        url = _webappPath+"/api/User/" + agentId ,
         //url = "https://172.20.64.34:8445/finesse/api/User/" + agentId ,
         //params = {"newState": state};
         //if (reasonCode) {
@@ -270,9 +270,28 @@ var Finesse = function (username, password) {
      *      Callback when error making the request.
      * @memberOf cisco.desktop.services.Transporter#
      */
-    this.subscribeToState = function (agentId, resource, handler, errHandler) {
+    this.subscribeToState = function (agentId, handler, errHandler) {
         var method = "POST",
-        url = "https://172.20.64.34:8445/finesse/api/User/" + agentId,
+        url = _webappPath+"/api/User/" + agentId,
+        params = {"resource": _resource};
+        _sendReq(url, method, null, params, handler, errHandler);
+    };
+
+     /**
+     *  NOT USED
+     * Subscribes to Agent Dialog events.
+     *
+     * @param {String} agentId
+     *      The Agent's username or Id.
+     * @param {Function(Object)} rspHandler
+     *      Callback to handle response.
+     * @param {Function(Object)} errHandler
+     *      Callback when error making the request.
+     * @memberOf cisco.desktop.services.Transporter#
+     */
+    this.subscribeToDialog = function (agentId, handler, errHandler) {
+        var method = "POST",
+        url = _webappPath + "/api/User/" + agentId+"/Dialogs",
         params = {"resource": _resource};
         _sendReq(url, method, null, params, handler, errHandler);
     };
@@ -295,7 +314,7 @@ var Finesse = function (username, password) {
      */
     this.makeCall = function (dialedNumber, callerNumber, handler, errHandler) {
         var method = "POST",
-        url = "https://172.20.64.34:8445/finesse/api/User/"+callerNumber+"/Dialogs",
+        url = _webappPath+"/api/User/"+callerNumber+"/Dialogs",
         params = { "requestedAction" : "MAKE_CALL",
                   "toAddress" : dialedNumber,
                   "fromAddress" : callerNumber},
@@ -316,7 +335,7 @@ var Finesse = function (username, password) {
      */
     this.answerCall = function (callId, myExtension, handler, errHandler) {
         var method = "PUT",
-        url = "https://172.20.64.34:8445/finesse/api/Dialog/" + callId,
+        url = _webappPath+"/api/Dialog/" + callId,
         xml = "<Dialog><targetMediaAddress>"+myExtension+"</targetMediaAddress><requestedAction>ANSWER</requestedAction></Dialog>";
         _sendReq(url, method, null, null, handler, errHandler, false, xml);
     };
@@ -334,7 +353,7 @@ var Finesse = function (username, password) {
      */
     this.holdCall = function (callId, myExtension, handler, errHandler) {
         var method = "PUT",
-        url = "https://172.20.64.34:8445/finesse/api/Dialog/" + callId,
+        url = _webappPath+"/api/Dialog/" + callId,
     xml = "<Dialog><targetMediaAddress>"+myExtension+"</targetMediaAddress><requestedAction>HOLD</requestedAction></Dialog>";
         _sendReq(url, method, null, null, handler, errHandler, false, xml);
     };
@@ -352,7 +371,7 @@ var Finesse = function (username, password) {
      */
     this.retrieveCall = function (callId, myExtension, handler, errHandler) {
         var method = "PUT",
-        url = "https://172.20.64.34:8445/finesse/api/Dialog/" + callId,
+        url = _webappPath+"/api/Dialog/" + callId,
         xml = "<Dialog><targetMediaAddress>"+myExtension+"</targetMediaAddress><requestedAction>RETRIEVE</requestedAction></Dialog>"; 
         _sendReq(url, method, null, null, handler, errHandler, false, xml);
     };
@@ -372,7 +391,7 @@ var Finesse = function (username, password) {
      */
     this.dropCall = function (callId, connectionDeviceID, handler, errHandler) {
         var method = "PUT",
-        url = "https://172.20.64.34:8445/finesse/api/Dialog/" + callId ,
+        url = _webappPath+"/api/Dialog/" + callId ,
         params = {"connectionDeviceId": connectionDeviceID},
         xml = "<Dialog><targetMediaAddress>"+connectionDeviceID+"</targetMediaAddress><requestedAction>DROP</requestedAction></Dialog>";
         _sendReq(url, method, null, params, handler, errHandler, false, xml);

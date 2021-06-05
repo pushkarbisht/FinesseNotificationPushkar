@@ -115,7 +115,7 @@ function _eventConnect() {
         jwArgs = {
             //Defines the BOSH path. Should match the path pattern in the proxy
             //so that it knows where to forward the BOSH request to.
-            httpBindingURL: "/http-bind",
+            httpBindingURL: "https://172.20.64.34:8445/http-bind",
             //Calls this function callback on successful BOSH connection by the
             //JabberWerx library.
 			errorCallback: onClientError,
@@ -143,6 +143,24 @@ function _eventConnect() {
 
         //Connect to BOSH connection.
         _jwClient.connect(jid, _password, jwArgs);
+
+
+        _finesse.subscribeToState(_username,function(r){
+            console.log("Successfully Subscribed to Status Change with following response.")
+            console.log(r);
+        },function(e){
+            console.log("Unable to Subscribed to Status Change with following error.")
+            console.log(r);
+        });
+        _finesse.subscribeToDialog(_username,function(r){
+            console.log("Successfully Subscribed to Dialog with following response.")
+            console.log(r);
+        },function(e){
+            console.log("Unable to Subscribed to Dialog  with following error.")
+            console.log(r);
+        });
+
+
     } else {
         alert("CAXL library not found. Please download from http://developer.cisco.com/web/xmpp/resources")
     }
